@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Loja do Leozinho</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .produto {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .produto img {
+      max-width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .produto h2 {
+      font-size: 18px;
+      margin: 10px 0;
+    }
+
+    .produto p {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .preco {
+      font-weight: bold;
+      font-size: 16px;
+      margin: 10px 0;
+      color: #008000;
+    }
+
+    .botao {
+      display: inline-block;
+      padding: 10px 15px;
+      background-color: #3483fa;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .botao:hover {
+      background-color: #2968c8;
+    }
+
+    /* POPUP */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+    }
+
+    .popup-content p {
+      font-size: 15px;
+      margin-bottom: 20px;
+    }
+
+    .fechar-popup {
+      padding: 10px 20px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>🛍️ Loja do Leozinho</h1>
+
+  <div class="grid" id="produtos"></div>
+
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <p id="mensagemPopup"></p>
+      <button class="fechar-popup" onclick="redirecionar()">Entendi e Concordo</button>
+    </div>
+  </div>
+
+  <script>
+    const produtos = [
+      {
+        nome: "Gerador de QR Code",
+        preco: "R$ 9,99",
+        imagem: "https://cdn.dfg.com.br/itemimages/903417728-gerador-de-qr-code-CLV2.webp",
+        link: "https://pay.sumup.com/b2c/QLVCKOFA"
+      },
+      {
+        nome: "Pack de Edição",
+        preco: "R$ 5,00",
+        imagem: "https://cdn.dfg.com.br/itemimages/903439299-pack-de-edicao-JTJE.webp",
+        link: "https://pay.sumup.com/b2c/QI5SLX9I"
+      },
+      {
+        nome: "Planilha: Lista de Endereços",
+        preco: "R$ 5,00",
+        imagem: "https://cdn.dfg.com.br/itemimages/908287345-lista-de-enderecos-e-telefones-VIRP.webp",
+        link: "https://pay.sumup.com/b2c/QGE5TMW4"
+      },
+      {
+        nome: "Planilha: Contas a Receber",
+        preco: "R$ 5,00",
+        imagem: "https://cdn.dfg.com.br/itemimages/945356623-planilha-de-contas-a-receber-DCJW.webp",
+        link: "https://pay.sumup.com/b2c/Q66ZEQG2"
+      },
+      {
+        nome: "Planilha: Catálogo de Endereços",
+        preco: "R$ 5,00",
+        imagem: "https://cdn.dfg.com.br/itemimages/959090299-catalogo-de-enderecos-EGIR.webp",
+        link: "https://pay.sumup.com/b2c/QBWTTW7W"
+      },
+      {
+        nome: "Planilha: Programação Semanal",
+        preco: "R$ 5,00",
+        imagem: "https://cdn.dfg.com.br/itemimages/969155223-programacao-semanal-RYLZ.webp",
+        link: "https://pay.sumup.com/b2c/QI70TV80"
+      },
+      {
+        nome: "Gerador de Código de Barras",
+        preco: "R$ 9,99",
+        imagem: "https://cdn.dfg.com.br/itemimages/985953197-script-gerador-de-codigo-de-barras-code128-ean13-ean8-up-87SB.webp",
+        link: "https://pay.sumup.com/b2c/QA2OUZT0"
+      }
+    ];
+
+    const container = document.getElementById("produtos");
+    const popup = document.getElementById("popup");
+    const mensagem = document.getElementById("mensagemPopup");
+
+    let linkPagamento = "";
+
+    produtos.forEach(produto => {
+      const card = document.createElement("div");
+      card.className = "produto";
+      card.innerHTML = `
+        <img src="${produto.imagem}" alt="${produto.nome}">
+        <h2>${produto.nome}</h2>
+        <p class="preco">${produto.preco}</p>
+        <button class="botao" onclick="mostrarPopup('${produto.nome}', '${produto.link}')">Comprar</button>
+      `;
+      container.appendChild(card);
+    });
+
+    function mostrarPopup(nomeProduto, link) {
+      mensagem.innerHTML = `📩 Após fazer a compra de <strong>${nomeProduto}</strong>, salve o comprovante e envie para o WhatsApp:<br>
+      <strong>+55 19 99836-6152</strong><br><br>
+      Também envie seu <strong>nome completo</strong>, e você receberá o produto no WhatsApp.`;
+      popup.style.display = "flex";
+      linkPagamento = link;
+    }
+
+    function redirecionar() {
+      popup.style.display = "none";
+      window.open(linkPagamento, "_blank");
+    }
+  </script>
+
+</body>
+</html>
