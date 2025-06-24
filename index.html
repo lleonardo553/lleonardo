@@ -16,6 +16,20 @@
       color: #333;
     }
 
+    .busca-container {
+      max-width: 500px;
+      margin: 0 auto 20px auto;
+      text-align: center;
+    }
+
+    .busca {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -106,6 +120,10 @@
 <body>
 
   <h1>🛍️ Loja do Leozinho</h1>
+
+  <div class="busca-container">
+    <input type="text" class="busca" id="campoBusca" placeholder="🔎 Buscar produtos..." oninput="filtrarProdutos()">
+  </div>
 
   <div class="grid" id="produtos"></div>
 
@@ -198,17 +216,28 @@
 
     let linkPagamento = "";
 
-    produtos.forEach(produto => {
-      const card = document.createElement("div");
-      card.className = "produto";
-      card.innerHTML = `
-        <img src="${produto.imagem}" alt="${produto.nome}">
-        <h2>${produto.nome}</h2>
-        <p class="preco">${produto.preco}</p>
-        <button class="botao" onclick="mostrarPopup('${produto.nome}', '${produto.link}')">Comprar</button>
-      `;
-      container.appendChild(card);
-    });
+    function renderizarProdutos(lista) {
+      container.innerHTML = "";
+      lista.forEach(produto => {
+        const card = document.createElement("div");
+        card.className = "produto";
+        card.innerHTML = `
+          <img src="${produto.imagem}" alt="${produto.nome}">
+          <h2>${produto.nome}</h2>
+          <p class="preco">${produto.preco}</p>
+          <button class="botao" onclick="mostrarPopup('${produto.nome}', '${produto.link}')">Comprar</button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function filtrarProdutos() {
+      const busca = document.getElementById("campoBusca").value.toLowerCase();
+      const resultados = produtos.filter(produto =>
+        produto.nome.toLowerCase().includes(busca)
+      );
+      renderizarProdutos(resultados);
+    }
 
     function mostrarPopup(nomeProduto, link) {
       mensagem.innerHTML = `📩 Após fazer a compra de <strong>${nomeProduto}</strong>, salve o comprovante e envie para o WhatsApp:<br>
@@ -222,6 +251,9 @@
       popup.style.display = "none";
       window.open(linkPagamento, "_blank");
     }
+
+    // Exibe todos os produtos ao carregar
+    renderizarProdutos(produtos);
   </script>
 
 </body>
