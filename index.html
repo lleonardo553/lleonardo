@@ -43,7 +43,35 @@
       border-radius: 10px;
       padding: 10px;
       text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transform: translateY(30px);
+      animation: aparecer 0.6s ease forwards;
+    }
+
+    /* Animação em cascata */
+    .produto:nth-child(1) { animation-delay: 0.1s; }
+    .produto:nth-child(2) { animation-delay: 0.2s; }
+    .produto:nth-child(3) { animation-delay: 0.3s; }
+    .produto:nth-child(4) { animation-delay: 0.4s; }
+    .produto:nth-child(5) { animation-delay: 0.5s; }
+    .produto:nth-child(6) { animation-delay: 0.6s; }
+    .produto:nth-child(7) { animation-delay: 0.7s; }
+    .produto:nth-child(8) { animation-delay: 0.8s; }
+    .produto:nth-child(9) { animation-delay: 0.9s; }
+    .produto:nth-child(10) { animation-delay: 1s; }
+    .produto:nth-child(11) { animation-delay: 1.1s; }
+    .produto:nth-child(12) { animation-delay: 1.2s; }
+    .produto:nth-child(13) { animation-delay: 1.3s; }
+    .produto:nth-child(14) { animation-delay: 1.4s; }
+    .produto:nth-child(15) { animation-delay: 1.5s; }
+    .produto:nth-child(16) { animation-delay: 1.6s; }
+
+    @keyframes aparecer {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .produto img {
@@ -193,7 +221,7 @@
       {
         nome: "pack de edição para thumbnail",
         preco: "R$ 5,00",
-        imagem: "https://i.ytimg.com/vi/iN9CRjKZ2fs/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDc2VoUd_f-2Nwc00G2Qu_5Kh9d3Q",
+        imagem: "https://i.ytimg.com/vi/iN9CRjKZ2fs/hq720.jpg",
         link: "https://pay.sumup.com/b2c/QE5ICWCR"
       },
       {
@@ -225,6 +253,12 @@
         preco: "R$ 10,00",
         imagem: "https://bing.com/th/id/BCO.d695e807-e9c0-4e67-b3fa-f57b0ab433ec.png",
         link: "https://pay.sumup.com/b2c/Q6E56U5S"
+      },
+      {
+        nome: "🎬 Pack de Edição V4",
+        preco: "R$ 12,00",
+        imagem: "https://bing.com/th/id/BCO.d7de5a7d-35fe-4d3b-a88d-0a27482e210b.png",
+        link: "https://pay.sumup.com/b2c/QEZR11Y2"
       }
     ];
 
