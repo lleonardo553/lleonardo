@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Loja do Leozinho</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🛍 Loja do Leozinho</h1>
+  </header>
+
+  <div class="container" id="lista-produtos"></div>
+
+  <!-- Pop-up -->
+  <div id="popup">
+    <div id="popup-content">
+      <img id="popup-img" src="" alt="Imagem do produto" />
+      <h2 id="popup-nome"></h2>
+      <p id="popup-preco"></p>
+      <p id="popup-desc"></p>
+      <p>Quantidade: <strong>Ilimitado</strong></p>
+      <p>Loja: <span class="verificado">lleonardo ✔️</span></p>
+      <button onclick="fecharPopup()">Fechar</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
