@@ -1,6 +1,28 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+  <!-- Verificação reCAPTCHA -->
+<div class="g-recaptcha" data-sitekey="6LcbkYorAAAAAFc6gQnh2O-PJ8aF4TESGpAb529I"></div>
+
+<!-- Botão que só ativa se o reCAPTCHA for resolvido -->
+<button onclick="verificarCaptcha()">Acessar conteúdo</button>
+
+<script>
+  function verificarCaptcha() {
+    var response = grecaptcha.getResponse();
+    if (response.length === 0) {
+      alert("Por favor, confirme que você não é um robô.");
+    } else {
+      alert("Verificado com sucesso! Conteúdo liberado.");
+      // Aqui você pode redirecionar, mostrar algo, etc
+      // window.location.href = "https://exemplo.com/conteudo-secreto";
+    }
+  }
+</script>
+
+  
   <meta charset="UTF-8">
   <title>Loja do Leozinho – Todos os Produtos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
