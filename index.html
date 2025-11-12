@@ -3,136 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>login lleozinho</title>
+<title>Central - lleozinho</title>
 <style>
   body {
+    margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    background: #0d1117;
     color: #fff;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
   }
 
-  .login-container {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 30px;
-    border-radius: 15px;
+  header {
     text-align: center;
-    width: 300px;
-    position: relative;
+    padding: 30px 20px;
   }
 
-  h2 {
+  header h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    color: #58a6ff;
+  }
+
+  header p {
+    font-size: 1.2em;
+    color: #c9d1d9;
+  }
+
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
     margin-bottom: 20px;
   }
 
-  input {
-    width: 90%;
-    padding: 10px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 8px;
-  }
-
   button {
-    background: #00c3ff;
-    border: none;
     padding: 10px 15px;
-    color: white;
     border-radius: 8px;
+    border: none;
     cursor: pointer;
+    background: #238636;
+    color: #fff;
+    font-weight: bold;
     transition: 0.3s;
-    width: 100%;
   }
 
   button:hover {
-    background: #0078ff;
-  }
-
-  .mensagem {
-    margin-top: 15px;
-    font-weight: bold;
+    background: #2ea043;
   }
 
   iframe {
     width: 100%;
-    height: 100vh;
+    height: 80vh;
     border: none;
     display: none;
   }
 
-  /* Popup */
-  .popup {
+  /* Popup menu */
+  .popup-menu {
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #0d1117;
-    color: #00ff88;
-    padding: 20px 30px;
+    background: #161b22;
+    padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.5);
     display: none;
-    font-weight: bold;
     z-index: 1000;
+    max-height: 70vh;
+    overflow-y: auto;
+    width: 300px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.7);
+  }
+
+  .popup-menu h3 {
+    margin-bottom: 15px;
+    color: #58a6ff;
+    text-align: center;
+  }
+
+  .popup-menu button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .close-popup {
+    background: #ff5555;
+    margin-top: 10px;
   }
 </style>
 </head>
 <body>
-  <div class="login-container" id="login-box">
-    <h2>login lleozinho</h2>
-    <input type="text" id="usuario" placeholder="Usuário">
-    <input type="password" id="senha" placeholder="Senha">
-    <button onclick="login()">Entrar</button>
-    <div class="mensagem" id="mensagem"></div>
-  </div>
 
-  <iframe id="siteFrame" src="https://lleozinhobr.netlify.app/"></iframe>
-  <div class="popup" id="popup">Logando no usuário, por favor aguarde...</div>
+<header>
+  <h1>Central</h1>
+  <p>Seja bem-vindo à central do lleozinho</p>
+</header>
+
+<div class="buttons">
+  <button onclick="abrirIframe('https://leozinho.erby.site/')">Acessar loja</button>
+  <button onclick="abrirPopup()">Projetos</button>
+</div>
+
+<iframe id="iframeSite"></iframe>
+
+<div class="popup-menu" id="popupMenu">
+  <h3>Projetos</h3>
+  <button onclick="abrirIframe('https://sites.google.com/view/gamesoft-downloadd/app-para-pc-da-escola/leia-sp')">Leia SP</button>
+  <button onclick="abrirIframe('https://darkmodde.xyz/CMSP-Hacks')">Site oficial (Darkmod)</button>
+  <button onclick="abrirIframe('https://obatataokkjj.github.io/Batata-Scripts/')">Site oficial (Obatataokkjj)</button>
+  <button onclick="abrirIframe('https://1lusa0.github.io/SalaDoFuturo-Plataformas-Hacks/')">Site oficial (1lusa0)</button>
+  <button onclick="abrirIframe('https://cmsptoolssite.netlify.app/')">Site oficial (CMSP Tools Site)</button>
+  <button onclick="abrirIframe('https://taskitos.cupiditys.lol')">Matfic</button>
+  <button onclick="abrirIframe('https://redacao.cupiditys.lol/')">Redação SP</button>
+  <button onclick="abrirIframe('https://crimsonstrauss.xyz/alura')">Alura</button>
+  <button onclick="abrirIframe('https://speakify.cupiditys.lol/')">Speakify V2</button>
+  <button onclick="abrirIframe('https://taskitos.cupiditys.lol/')">Taskitos</button>
+  <button class="close-popup" onclick="fecharPopup()">Fechar</button>
+</div>
 
 <script>
-async function login() {
-  const usuarioInput = document.getElementById("usuario").value.trim().toLowerCase();
-  const senhaInput = document.getElementById("senha").value.trim();
-  const msg = document.getElementById("mensagem");
+  const iframe = document.getElementById('iframeSite');
+  const popup = document.getElementById('popupMenu');
 
-  try {
-    const resposta = await fetch("https://raw.githubusercontent.com/lleonardo553/banco-de-dados/refs/heads/main/usuarios.json");
-    const data = await resposta.json();
-
-    const usuarioEncontrado = data.usuarios.find(u => u.nome === usuarioInput && u.senha === senhaInput);
-
-    if (usuarioEncontrado) {
-      // Mostra mensagem de sucesso no popup
-      const popup = document.getElementById("popup");
-      popup.style.display = "block";
-      msg.textContent = "";
-
-      setTimeout(() => {
-        popup.style.display = "none";
-        document.getElementById("login-box").style.display = "none";
-        document.getElementById("siteFrame").style.display = "block";
-      }, 2000); // 2 segundos de popup
-    } else {
-      msg.style.color = "#ff5555";
-      msg.textContent = "Usuário ou senha incorretos!";
-    }
-  } catch (erro) {
-    msg.style.color = "#ff5555";
-    msg.textContent = "Erro ao conectar ao banco de dados!";
-    console.error("Erro ao conectar:", erro);
+  function abrirIframe(url) {
+    popup.style.display = 'none'; // fecha popup se estava aberto
+    iframe.src = url;
+    iframe.style.display = 'block';
+    window.scrollTo(0, iframe.offsetTop);
   }
-}
 
-// Faz login ao apertar Enter
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    login();
+  function abrirPopup() {
+    popup.style.display = 'block';
   }
-});
+
+  function fecharPopup() {
+    popup.style.display = 'none';
+  }
 </script>
+
 </body>
 </html>
