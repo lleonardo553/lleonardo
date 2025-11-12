@@ -1,698 +1,117 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Loja do Leozinho</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 20px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>login lleozinho</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
 
-    h1 {
-      text-align: center;
-      color: #333;
-    }
+  .login-container {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    width: 300px;
+  }
 
-    .busca-container {
-      max-width: 500px;
-      margin: 0 auto 20px auto;
-      text-align: center;
-    }
+  h2 {
+    margin-bottom: 20px;
+  }
 
-    .busca {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
+  input {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 8px;
+  }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
+  button {
+    background: #00c3ff;
+    border: none;
+    padding: 10px 15px;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
+  }
 
-    .produto {
-      background-color: #fff;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-      opacity: 0;
-      transform: translateY(30px);
-      animation: aparecer 0.6s ease forwards;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
+  button:hover {
+    background: #0078ff;
+  }
 
-    .produto:hover {
-      transform: translateY(-5px);
-    }
+  .mensagem {
+    margin-top: 15px;
+    font-weight: bold;
+  }
 
-    /* Animação em cascata */
-    .produto:nth-child(1) { animation-delay: 0.1s; }
-    .produto:nth-child(2) { animation-delay: 0.2s; }
-    .produto:nth-child(3) { animation-delay: 0.3s; }
-    .produto:nth-child(4) { animation-delay: 0.4s; }
-    .produto:nth-child(5) { animation-delay: 0.5s; }
-    .produto:nth-child(6) { animation-delay: 0.6s; }
-    .produto:nth-child(7) { animation-delay: 0.7s; }
-    .produto:nth-child(8) { animation-delay: 0.8s; }
-    .produto:nth-child(9) { animation-delay: 0.9s; }
-    .produto:nth-child(10) { animation-delay: 1s; }
-    .produto:nth-child(11) { animation-delay: 1.1s; }
-    .produto:nth-child(12) { animation-delay: 1.2s; }
-    .produto:nth-child(13) { animation-delay: 1.3s; }
-    .produto:nth-child(14) { animation-delay: 1.4s; }
-    .produto:nth-child(15) { animation-delay: 1.5s; }
-    .produto:nth-child(16) { animation-delay: 1.6s; }
-
-    @keyframes aparecer {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .produto img {
-      max-width: 100%;
-      height: 160px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    .produto h2 {
-      font-size: 18px;
-      margin: 10px 0;
-    }
-
-    .preco {
-      font-weight: bold;
-      font-size: 16px;
-      margin: 10px 0;
-      color: #008000;
-    }
-
-    .botao {
-      display: inline-block;
-      padding: 10px 15px;
-      background-color: #3483fa;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .botao:hover {
-      background-color: #2968c8;
-    }
-
-    .popup {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.6);
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-      opacity: 0;
-      transform: scale(0.8);
-      transition: all 0.3s ease;
-    }
-
-    .popup.active {
-      display: flex;
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .popup-content {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      max-width: 600px;
-      width: 90%;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-      position: relative;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .popup-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .popup-title {
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .close-popup {
-      font-size: 24px;
-      cursor: pointer;
-      color: #999;
-      transition: color 0.3s;
-    }
-
-    .close-popup:hover {
-      color: #333;
-    }
-
-    .popup-body {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .popup-image-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #f8f8f8;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
-      min-height: 200px;
-    }
-
-    .popup-image {
-      max-width: 100%;
-      max-height: 250px;
-      object-fit: contain;
-      border-radius: 8px;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: slideUp 0.5s ease 0.3s forwards;
-    }
-
-    .popup-details {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      text-align: left;
-    }
-
-    .popup-price {
-      font-size: 22px;
-      font-weight: bold;
-      color: #008000;
-    }
-
-    .popup-seller {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 16px;
-      color: #555;
-    }
-
-    .verified-badge {
-      width: 16px;
-      height: 16px;
-      background-image: url('data:image/png;base64,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');
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
-
-    .popup-description {
-      font-size: 15px;
-      color: #555;
-      line-height: 1.5;
-    }
-
-    .popup-features {
-      margin-top: 10px;
-    }
-
-    .feature-title {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .feature-list {
-      list-style-type: disc;
-      padding-left: 20px;
-      color: #555;
-    }
-
-    .popup-ratings {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .stars {
-      color: #3498db;
-      font-size: 18px;
-    }
-
-    .sales-count {
-      font-size: 14px;
-      color: #777;
-      margin-left: 10px;
-    }
-
-    .popup-quantity {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .quantity-label {
-      font-weight: bold;
-    }
-
-    .quantity-value {
-      padding: 5px 15px;
-      background-color: #f0f0f0;
-      border-radius: 5px;
-    }
-
-    .popup-buy-btn {
-      padding: 12px 25px;
-      background-color: #3483fa;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s;
-      margin-top: 15px;
-      width: 100%;
-    }
-
-    .popup-buy-btn:hover {
-      background-color: #2968c8;
-    }
-
-    .confirmation-popup {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .confirmation-content {
-      background: white;
-      padding: 25px;
-      border-radius: 10px;
-      text-align: center;
-      max-width: 400px;
-      width: 90%;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .confirmation-message {
-      font-size: 16px;
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-
-    .confirmation-message strong {
-      color: #333;
-    }
-
-    .confirmation-btn {
-      padding: 10px 20px;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-
-    .confirmation-btn:hover {
-      background-color: #218838;
-    }
-
-    @keyframes slideUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 600px) {
-      .popup-content {
-        padding: 20px;
-      }
-      
-      .popup-title {
-        font-size: 20px;
-      }
-      
-      .popup-image {
-        max-height: 200px;
-      }
-    }
-  </style>
+  iframe {
+    width: 100%;
+    height: 100vh;
+    border: none;
+    display: none;
+  }
+</style>
 </head>
 <body>
-
-  <h1>🛍️ Loja do Leozinho</h1>
-
-  <div class="busca-container">
-    <input type="text" class="busca" id="campoBusca" placeholder="🔎 Buscar produtos..." oninput="filtrarProdutos()">
+  <div class="login-container" id="login-box">
+    <h2>login lleozinho</h2>
+    <input type="text" id="usuario" placeholder="Usuário">
+    <input type="password" id="senha" placeholder="Senha">
+    <button onclick="login()">Entrar</button>
+    <div class="mensagem" id="mensagem"></div>
   </div>
 
-  <div class="grid" id="produtos"></div>
-
-  <!-- Popup de detalhes do produto -->
-  <div class="popup" id="productPopup">
-    <div class="popup-content">
-      <div class="popup-header">
-        <div class="popup-title" id="popupProductName"></div>
-        <div class="close-popup" onclick="fecharPopup()">×</div>
-      </div>
-      <div class="popup-body">
-        <div class="popup-image-container">
-          <img class="popup-image" id="popupProductImage" src="" alt="">
-        </div>
-        <div class="popup-details">
-          <div class="popup-price" id="popupProductPrice"></div>
-          <div class="popup-seller">
-            Vendido por: <span id="popupProductSeller">lleonardo</span>
-            <span class="verified-badge"></span>
-          </div>
-          <div class="popup-description" id="popupProductDescription"></div>
-          <div class="popup-features">
-            <div class="feature-title">Características:</div>
-            <ul class="feature-list" id="popupProductFeatures"></ul>
-          </div>
-          <div class="popup-ratings">
-            <div class="stars">★★★★★</div>
-            <div class="sales-count" id="popupProductSales"></div>
-          </div>
-          <div class="popup-quantity">
-            <div class="quantity-label">Quantidade:</div>
-            <div class="quantity-value">Ilimitado</div>
-          </div>
-         
-<button class="popup-buy-btn" id="popupBuyBtn">Comprar Agora</button>
+  <iframe id="siteFrame" src="https://lleozinhobr.netlify.app/"></iframe>
 
 <script>
-  document.getElementById('popupBuyBtn').addEventListener('click', function() {
-    window.location.href = 'https://3d1b0923.sibforms.com/serve/MUIFADBX8FNIWTuz7aKf-BSo7kGOCmY6_S3Ma75zzyc_epYrEWhEnF546hRuGX0FevgQ8Fh0PKtb8_2s_hfNI4vImBR_jNX6SpITazFNQJgxzkEhMcugjbdZDBKwZbrogYQDm-Q6giljmfgJDhU1SEAO5ZGWOKlQzpiNZ2foMK0vPMEZS-U_ioGT4RoovoEyxZJl1mFiFJsfTc6c';
-  });
+async function login() {
+  const usuarioInput = document.getElementById("usuario").value.trim();
+  const senhaInput = document.getElementById("senha").value.trim();
+  const msg = document.getElementById("mensagem");
+
+  try {
+    const resposta = await fetch("https://raw.githubusercontent.com/lleonardo553/banco-de-dados/refs/heads/main/usuarios.json");
+    const data = await resposta.json();
+
+    const usuarioEncontrado = data.usuarios.find(u => u.nome === usuarioInput && u.senha === senhaInput);
+
+    if (usuarioEncontrado) {
+      msg.style.color = "#00ff88";
+      msg.textContent = `Bem-vindo, ${usuarioEncontrado.nome}! ✅`;
+      setTimeout(() => {
+        document.getElementById("login-box").style.display = "none";
+        const siteFrame = document.getElementById("siteFrame");
+        siteFrame.style.display = "block";
+      }, 1000);
+    } else {
+      msg.style.color = "#ff5555";
+      msg.textContent = "Usuário ou senha incorretos!";
+    }
+  } catch (erro) {
+    msg.style.color = "#ff5555";
+    msg.textContent = "Erro ao conectar ao banco de dados!";
+    console.error("Erro ao conectar:", erro);
+  }
+}
+
+// Faz login ao apertar Enter
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    login();
+  }
+});
 </script>
-
-
-
-
-  </div>
-
- 
-
-  <div style="text-align: center; margin-top: 40px;">
-    <a href="https://sites.google.com/view/sitesdolleonardo/inicio" target="_blank" style="display: inline-block; padding: 12px 20px; background-color: #333; color: white; font-size: 16px; border-radius: 8px; text-decoration: none; font-weight: bold;">
-      🌐 Ver todos os sites do lleonardo
-    </a>
-  </div>
-
-  <script>
-    const produtos = [
-      {
-        nome: "Gerador de QR Code",
-        preco: "R$ 9,99",
-        imagem: "https://cdn.dfg.com.br/itemimages/903417728-gerador-de-qr-code-CLV2.webp",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Gerador de QR Code prático e fácil de usar para diversos propósitos.",
-        caracteristicas: ["Geração rápida de QR Codes", "Formatos personalizáveis", "Compatível com todos os dispositivos"]
-      },
-      {
-        nome: "Pack de Edição",
-        preco: "R$ 5,00",
-        imagem: "https://cdn.dfg.com.br/itemimages/903439299-pack-de-edicao-JTJE.webp",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Pack completo com efeitos e transições para edição de vídeos profissionais.",
-        caracteristicas: ["50+ efeitos diferentes", "Transições suaves", "Compatível com principais editores"]
-      },
-      {
-        nome: "Planilha: Lista de Endereços",
-        preco: "R$ 5,00",
-        imagem: "https://cdn.dfg.com.br/itemimages/908287345-lista-de-enderecos-e-telefones-VIRP.webp",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Planilha organizada para gerenciar todos os seus contatos e endereços.",
-        caracteristicas: ["Categorização de contatos", "Fácil busca e filtro", "Design intuitivo"]
-      },
-      {
-        nome: "Planilha: Contas a Receber",
-        preco: "R$ 5,00",
-        imagem: "https://cdn.dfg.com.br/itemimages/945356623-planilha-de-contas-a-receber-DCJW.webp",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Controle suas finanças e acompanhe todas as contas a receber.",
-        caracteristicas: ["Cálculos automáticos", "Gráficos de acompanhamento", "Lembretes personalizáveis"]
-      },
-      {
-        nome: "Planilha: Catálogo de Endereços",
-        preco: "R$ 5,00",
-        imagem: "https://cdn.dfg.com.br/itemimages/959090299-catalogo-de-enderecos-EGIR.webp",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Catálogo completo para organizar todos os seus endereços importantes.",
-        caracteristicas: ["Busca rápida", "Categorização por tipo", "Exportação para PDF"]
-      },
-      {
-        nome: "Planilha: Programação Semanal",
-        preco: "R$ 5,00",
-        imagem: "https://cdn.dfg.com.br/itemimages/969155223-programacao-semanal-RYLZ.webp",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Organize sua semana de forma eficiente com esta planilha completa.",
-        caracteristicas: ["Visualização por dia/semana", "Lembretes integrados", "Priorização de tarefas"]
-      },
-      {
-        nome: "Gerador de Código de Barras",
-        preco: "R$ 9,99",
-        imagem: "https://cdn.dfg.com.br/itemimages/985953197-script-gerador-de-codigo-de-barras-code128-ean13-ean8-up-87SB.webp",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Ferramenta profissional para geração de códigos de barras em diversos formatos.",
-        caracteristicas: ["Suporte a múltiplos formatos", "Alta resolução", "Integração fácil"]
-      },
-      {
-        nome: "Planilha: Orçamento Pessoal Mensal",
-        preco: "R$ 5,00",
-        imagem: "https://cdn.create.microsoft.com/catalog-assets/pt-br/d6bba358-6527-464c-bf23-3fff4462bd35/thumbnails/1038/or%25C3%25A7amento-pessoal-mensal-modern-simple-2-1-e35df60f0e22.webp",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Controle suas finanças pessoais com esta planilha detalhada de orçamento.",
-        caracteristicas: ["Categorias personalizáveis", "Gráficos de acompanhamento", "Alertas de gastos"]
-      },
-      {
-        nome: "🕹️ Combo GTA San Andreas + MODs Separados",
-        preco: "R$ 5,00",
-        imagem: "https://cdn.dfg.com.br/itemimages/980379779-combo-gta-san-andreas-mods-separados-ET21.webp",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Pacote completo do jogo GTA San Andreas com os melhores MODs incluídos.",
-        caracteristicas: ["Instalação fácil", "MODs testados", "Compatível com Windows"]
-      },
-      {
-        nome: "pack de edição para thumbnail",
-        preco: "R$ 5,00",
-        imagem: "https://i.ytimg.com/vi/iN9CRjKZ2fs/hq720.jpg",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Elementos de design prontos para criar thumbnails profissionais para seus vídeos.",
-        caracteristicas: ["PSD e PNG incluídos", "Camadas editáveis", "Estilos variados"]
-      },
-      {
-        nome: "🔊 Pack Criador de Efeitos Sonoros",
-        preco: "R$ 5,00",
-        imagem: "https://cdn.dfg.com.br/itemimages/912015413-pack-criador-de-efeitos-sonoros-O58O.webp",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Coleção de efeitos sonoros de alta qualidade para seus projetos multimídia.",
-        caracteristicas: ["200+ efeitos diferentes", "Formatos WAV e MP3", "Categorizados por tipo"]
-      },
-      {
-        nome: "pack de imagens (aleatório)",
-        preco: "R$ 5,00",
-        imagem: "https://cdn.dfg.com.br/itemimages/915039936-pack-de-imagens-aleatorio-1W58.webp",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Coleção diversificada de imagens para uso em seus projetos criativos.",
-        caracteristicas: ["Variados temas", "Alta resolução", "Licença de uso comercial"]
-      },
-      {
-        nome: "Thumbnail Pack",
-        preco: "R$ 7,00",
-        imagem: "https://bing.com/th/id/BCO.d6325962-9c03-4824-be9f-330a1f40dd20.png",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Elementos prontos para criação de thumbnails atrativos para YouTube e redes sociais.",
-        caracteristicas: ["Templates editáveis", "Fontes incluídas", "Estilos modernos"]
-      },
-      {
-        nome: "🎬 Pack de Edição V2",
-        preco: "R$ 5,00",
-        imagem: "https://cdn.dfg.com.br/itemimages/989402237-pack-de-edicao-v2-G2LR.webp",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Versão atualizada do pack de edição com novos efeitos e transições.",
-        caracteristicas: ["70+ novos efeitos", "Transições em 4K", "Tutorial de uso"]
-      },
-      {
-        nome: "🎬 Pack de Edição V3",
-        preco: "R$ 10,00",
-        imagem: "https://bing.com/th/id/BCO.d695e807-e9c0-4e67-b3fa-f57b0ab433ec.png",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "Pacote premium com efeitos profissionais para edição de vídeos.",
-        caracteristicas: ["Efeitos em alta qualidade", "Presets para diferentes estilos", "Atualizações gratuitas"]
-      },
-      {
-        nome: "🎬 Pack de Edição V4",
-        preco: "R$ 12,00",
-        imagem: "https://bing.com/th/id/BCO.d7de5a7d-35fe-4d3b-a88d-0a27482e210b.png",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFAMhS2PlddPPclL_T-ZswUAroqZV0MRonM8BNbAfzlqUkX2AEOJN17bQRdBvjatfU0mtQSdLhzKiXsFPPna7wmMjMpQnXjzJpp1xmv2TuL0ES7WCJBtGmQputCEcNDPgxkUs9k4TAkIZc4uVCN9yQJAO35X28pGrOujFjxF1wvBc5IQrT_g7WBECedCi114BXVo5LtFfOscQj",
-        descricao: "A mais completa coleção de efeitos e transições para edição profissional.",
-        caracteristicas: ["100+ efeitos exclusivos", "Suporte 8K", "Assets organizados"]
-      },
-       {
-    nome: "Calculadora Simples",
-    preco: "R$ 2,50",
-    imagem: "https://imgs.search.brave.com/9MVOu-hiWJABW-FVIe80ZKIv5RHcH5XTBDgk7m2Fojk/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly90NC5m/dGNkbi5uZXQvanBn/LzAzLzQ1LzM2LzEx/LzM2MF9GXzM0NTM2/MTExNF9oSW41VlFJ/VzRSNUY3MG5yaW5Z/OXRVM1lNOXpFWHk4/NS5qcGc",
-    link: "https://3d1b0923.sibforms.com/serve/MUIFADBX8FNIWTuz7aKf-BSo7kGOCmY6_S3Ma75zzyc_epYrEWhEnF546hRuGX0FevgQ8Fh0PKtb8_2s_hfNI4vImBR_jNX6SpITazFNQJgxzkEhMcugjbdZDBKwZbrogYQDm-Q6giljmfgJDhU1SEAO5ZGWOKlQzpiNZ2foMK0vPMEZS-U_ioGT4RoovoEyxZJl1mFiFJsfTc6c",
-    descricao: "Uma calculadora simples para Windows em arquivo executável .exe com opções de contas: +, -, *, /",
-    caracteristicas: ["Calculadora simples", "Opções de conta: +, -, *, /"]
-  },
-   {
-        nome: "Tela de Carregamento em PHP",
-        preco: "R$ 2,50",
-        imagem: "https://i.pinimg.com/736x/80/40/79/80407972ca5e71fb0ea9477f782e2959.jpg",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFADBX8FNIWTuz7aKf-BSo7kGOCmY6_S3Ma75zzyc_epYrEWhEnF546hRuGX0FevgQ8Fh0PKtb8_2s_hfNI4vImBR_jNX6SpITazFNQJgxzkEhMcugjbdZDBKwZbrogYQDm-Q6giljmfgJDhU1SEAO5ZGWOKlQzpiNZ2foMK0vPMEZS-U_ioGT4RoovoEyxZJl1mFiFJsfTc6c",
-        descricao: "Tela de carregamento simples feita em PHP.",
-        caracteristicas: ["Tela de carregamento", "Em PHP"]
-      },
-      {
-        nome: "Catálogo de Produtos com 10 produtos",
-        preco: "R$ 2,50",
-        imagem: "https://imgs.search.brave.com/WHiHnQ01_opBAFvSD7Euyt3FUrTl28KDHMEAfiWQB68/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWFn/ZXMudmV4ZWxzLmNv/bS9tZWRpYS91c2Vy/cy8zLzEzMjEwMy9p/c29sYXRlZC9wcmV2/aWV3LzJiNTEyYjVl/Y2U1ZDkxNGU2ODk1/MGJmZGJmNzNiNDgx/LWljb25lLWRvLWNp/cmN1bG8tZG8tY2Fy/cmluaG8tZGUtY29t/cHJhcy5wbmc",
-        link: "https://3d1b0923.sibforms.com/serve/MUIFADBX8FNIWTuz7aKf-BSo7kGOCmY6_S3Ma75zzyc_epYrEWhEnF546hRuGX0FevgQ8Fh0PKtb8_2s_hfNI4vImBR_jNX6SpITazFNQJgxzkEhMcugjbdZDBKwZbrogYQDm-Q6giljmfgJDhU1SEAO5ZGWOKlQzpiNZ2foMK0vPMEZS-U_ioGT4RoovoEyxZJl1mFiFJsfTc6c",
-        descricao: "Catálogo de produtos com 10 produtos em HTML, CSS, JS.",
-        caracteristicas: ["Catálogo de produtos", "10 produtos", "Em HTML, CSS, JS"]
-      }
-    ];
-    const container = document.getElementById("produtos");
-    const productPopup = document.getElementById("productPopup");
-    const confirmationPopup = document.getElementById("confirmationPopup");
-    let currentProductLink = "";
-
-    function renderizarProdutos(lista) {
-      container.innerHTML = "";
-      lista.forEach(produto => {
-        const card = document.createElement("div");
-        card.className = "produto";
-        card.innerHTML = `
-          <img src="${produto.imagem}" alt="${produto.nome}" onerror="this.src='https://via.placeholder.com/250x160?text=Imagem+Não+Disponível'">
-          <h2>${produto.nome}</h2>
-          <p class="preco">${produto.preco}</p>
-          <button class="botao" onclick="mostrarDetalhesProduto('${produto.nome.replace(/'/g, "\\'")}')">Comprar</button>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function filtrarProdutos() {
-      const busca = document.getElementById("campoBusca").value.toLowerCase();
-      const resultados = produtos.filter(produto =>
-        produto.nome.toLowerCase().includes(busca)
-      );
-      renderizarProdutos(resultados);
-    }
-
-    function mostrarDetalhesProduto(nomeProduto) {
-      const produto = produtos.find(p => p.nome === nomeProduto);
-      if (!produto) return;
-
-      // Preencher os detalhes do produto no popup
-      document.getElementById("popupProductName").textContent = produto.nome;
-      document.getElementById("popupProductPrice").textContent = produto.preco;
-      document.getElementById("popupProductDescription").textContent = produto.descricao;
-      
-      // Preencher características
-      const featuresList = document.getElementById("popupProductFeatures");
-      featuresList.innerHTML = "";
-      produto.caracteristicas.forEach(feature => {
-        const li = document.createElement("li");
-        li.textContent = feature;
-        featuresList.appendChild(li);
-      });
-      
-      // Gerar número aleatório de vendas entre 127 e 139
-      const randomSales = Math.floor(Math.random() * (139 - 127 + 1)) + 127;
-      document.getElementById("popupProductSales").textContent = `${randomSales} vendidos`;
-      
-      // Configurar botão de compra
-      const buyBtn = document.getElementById("popupBuyBtn");
-      buyBtn.onclick = function() {
-        mostrarConfirmacaoCompra(produto.nome, produto.link);
-      };
-      
-      // Carregar a imagem
-      const productImage = document.getElementById("popupProductImage");
-      productImage.src = produto.imagem;
-      productImage.alt = produto.nome;
-      productImage.onerror = function() {
-        this.src = "https://via.placeholder.com/500x300?text=Imagem+Não+Disponível";
-      };
-      
-      // Mostrar popup com animação
-      productPopup.classList.add("active");
-    }
-
-    function fecharPopup() {
-      productPopup.classList.remove("active");
-    }
-
-  
-      
-   
-
-    function redirecionarParaPagamento() {
-      confirmationPopup.style.display = "none";
-      if (currentProductLink) {
-        window.open(currentProductLink, "_blank");
-      }
-    }
-
-    // Fechar popups ao clicar fora do conteúdo
-    window.addEventListener('click', function(event) {
-      if (event.target === productPopup) {
-        fecharPopup();
-      }
-      if (event.target === confirmationPopup) {
-        confirmationPopup.style.display = "none";
-      }
-    });
-
-    // Inicializar a página
-    renderizarProdutos(produtos);
-  </script>
-
-
-<script>
-  document.addEventListener('contextmenu', function(e) {
-    if (e.target.tagName === 'IMG') {
-      e.preventDefault();
-    }
-  });
-</script>
-
-
-
 </body>
-</html> 
+</html>
