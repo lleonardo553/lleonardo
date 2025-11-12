@@ -22,6 +22,7 @@
     border-radius: 15px;
     text-align: center;
     width: 300px;
+    position: relative;
   }
 
   h2 {
@@ -62,6 +63,22 @@
     border: none;
     display: none;
   }
+
+  /* Popup */
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #0d1117;
+    color: #00ff88;
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    display: none;
+    font-weight: bold;
+    z-index: 1000;
+  }
 </style>
 </head>
 <body>
@@ -74,10 +91,11 @@
   </div>
 
   <iframe id="siteFrame" src="https://lleozinhobr.netlify.app/"></iframe>
+  <div class="popup" id="popup">Logando no usuário, por favor aguarde...</div>
 
 <script>
 async function login() {
-  const usuarioInput = document.getElementById("usuario").value.trim();
+  const usuarioInput = document.getElementById("usuario").value.trim().toLowerCase();
   const senhaInput = document.getElementById("senha").value.trim();
   const msg = document.getElementById("mensagem");
 
@@ -88,13 +106,16 @@ async function login() {
     const usuarioEncontrado = data.usuarios.find(u => u.nome === usuarioInput && u.senha === senhaInput);
 
     if (usuarioEncontrado) {
-      msg.style.color = "#00ff88";
-      msg.textContent = `Bem-vindo, ${usuarioEncontrado.nome}! ✅`;
+      // Mostra mensagem de sucesso no popup
+      const popup = document.getElementById("popup");
+      popup.style.display = "block";
+      msg.textContent = "";
+
       setTimeout(() => {
+        popup.style.display = "none";
         document.getElementById("login-box").style.display = "none";
-        const siteFrame = document.getElementById("siteFrame");
-        siteFrame.style.display = "block";
-      }, 1000);
+        document.getElementById("siteFrame").style.display = "block";
+      }, 2000); // 2 segundos de popup
     } else {
       msg.style.color = "#ff5555";
       msg.textContent = "Usuário ou senha incorretos!";
