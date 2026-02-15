@@ -30,50 +30,66 @@
         }
     </script>
     <style>
-        /* Custom scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0d1117; }
         ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #58a6ff; }
-      
+     
         .glass-effect {
             background: rgba(22, 27, 34, 0.8);
             backdrop-filter: blur(10px);
         }
-      
+     
         .loader {
             border-top-color: #58a6ff;
             -webkit-animation: spinner 1.5s linear infinite;
             animation: spinner 1.5s linear infinite;
         }
-      
+     
         @keyframes spinner {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
         .fade-in { animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-      
+     
         .slide-up { animation: slideUp 0.4s ease-out; }
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* Bloqueia seleção de texto em toda a página */
         * {
             -webkit-user-select: none !important;
                -moz-user-select: none !important;
                 -ms-user-select: none !important;
                     user-select: none !important;
         }
-
-        /* Permite selecionar apenas em campos de input e textarea */
         input, textarea, [contenteditable="true"] {
             -webkit-user-select: text !important;
                -moz-user-select: text !important;
                 -ms-user-select: text !important;
                     user-select: text !important;
+        }
+        #backToMenu {
+            position: absolute;
+            top: 70px;
+            left: 16px;
+            z-index: 100;
+            background: rgba(22, 27, 34, 0.9);
+            backdrop-filter: blur(8px);
+            border: 1px solid #30363d;
+            padding: 10px 16px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+        #backToMenu:hover {
+            background: #238636;
+            transform: translateY(-2px);
         }
     </style>
 </head>
@@ -81,15 +97,11 @@
       oncontextmenu="return false;"
       ondragstart="return false;"
       onselectstart="return false;">
-
-    <!-- Background Decorations -->
     <div class="fixed inset-0 z-[-1] overflow-hidden pointer-events-none">
         <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-[120px]"></div>
         <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-secondary/5 blur-[120px]"></div>
     </div>
-
     <div class="container mx-auto px-4 py-12 flex-grow flex flex-col items-center relative">
-      
         <header class="text-center mb-12 w-full max-w-3xl slide-up">
             <div class="inline-flex items-center justify-center p-4 rounded-full bg-card border border-border mb-6 shadow-lg ring-4 ring-border/30">
                 <i class="fa-solid fa-layer-group text-3xl text-primary"></i>
@@ -101,14 +113,12 @@
                 Seja bem-vindo à central. Explore ferramentas, projetos educacionais e utilitários em um só lugar.
             </p>
         </header>
-
         <div class="flex flex-wrap justify-center gap-5 mb-12 slide-up" style="animation-delay: 0.1s;">
             <a href="https://leozinho.erby.site/" target="_blank"
                class="group flex items-center gap-3 px-8 py-4 bg-card hover:bg-border text-white rounded-xl border border-border transition-all duration-300 shadow-lg hover:shadow-primary/10 font-medium">
                 <i class="fa-solid fa-store text-primary group-hover:scale-110 transition-transform"></i>
                 <span>Acessar Loja</span>
             </a>
-          
             <button onclick="openModal()"
                     class="group flex items-center gap-3 px-8 py-4 bg-secondary hover:bg-hover text-white rounded-xl shadow-lg hover:shadow-green-500/20 transition-all duration-300 transform hover:-translate-y-1 font-medium">
                 <i class="fa-solid fa-folder-open group-hover:rotate-12 transition-transform"></i>
@@ -118,6 +128,9 @@
 
         <!-- Iframe Container -->
         <div id="iframeContainer" class="w-full max-w-6xl h-[80vh] relative hidden slide-up" style="animation-delay: 0.2s;">
+            <button id="backToMenu" onclick="backToProjects()">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Voltar ao Menu de Projetos
+            </button>
             <div class="absolute inset-0 flex flex-col items-center justify-center bg-card border border-border rounded-2xl z-10" id="loadingState">
                 <div class="loader ease-linear rounded-full border-4 border-t-4 border-gray-700 h-12 w-12 mb-4"></div>
                 <p class="text-gray-400 animate-pulse font-medium">Carregando aplicação...</p>
@@ -132,7 +145,7 @@
                     <div class="text-xs text-gray-500 font-mono bg-background px-3 py-1 rounded border border-border/50 select-none" id="urlBar">
                         about:blank
                     </div>
-                    <button onclick="closeIframe()" class="text-sm text-gray-400 hover:text-white hover:bg-white/10 px-3 py-1 rounded transition-all flex items-center gap-2">
+                    <button onclick="closeIframeAndReopenModal()" class="text-sm text-gray-400 hover:text-white hover:bg-white/10 px-3 py-1 rounded transition-all flex items-center gap-2">
                         <i class="fa-solid fa-xmark"></i> <span class="hidden sm:inline">Fechar</span>
                     </button>
                 </div>
@@ -149,12 +162,10 @@
         </div>
     </footer>
 
-    <!-- Modal Overlay -->
+    <!-- Modal Projetos -->
     <div id="modalOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-opacity duration-300 opacity-0" aria-hidden="true">
         <div class="fixed inset-0 flex items-center justify-center p-4" onclick="if(event.target === this) closeModal()">
             <div id="modalContent" class="bg-card border border-border w-full max-w-4xl max-h-[85vh] rounded-2xl shadow-2xl flex flex-col transform scale-95 transition-all duration-300 overflow-hidden">
-              
-                <!-- Modal Header -->
                 <div class="p-6 border-b border-border flex justify-between items-center bg-card relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent pointer-events-none"></div>
                     <div class="relative z-10">
@@ -167,8 +178,6 @@
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
-
-                <!-- Search & Filters -->
                 <div class="p-4 border-b border-border bg-background/50 flex flex-col md:flex-row gap-4">
                     <div class="relative flex-grow">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></i>
@@ -182,12 +191,8 @@
                         <button class="filter-btn px-4 py-2 rounded-lg text-sm font-medium bg-card border border-border hover:border-primary text-gray-400 hover:text-white transition-all hover:scale-105 active:scale-95 whitespace-nowrap" data-category="hacks">Hacks</button>
                     </div>
                 </div>
-
-                <!-- Grid -->
                 <div class="p-6 overflow-y-auto flex-grow bg-background/30 custom-scrollbar">
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="projectsGrid">
-                        <!-- Cards will be injected here -->
-                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="projectsGrid"></div>
                     <div id="noResults" class="hidden flex flex-col items-center justify-center py-16 text-center">
                         <div class="w-16 h-16 rounded-full bg-border/50 flex items-center justify-center mb-4">
                             <i class="fa-solid fa-magnifying-glass text-2xl text-gray-500"></i>
@@ -200,8 +205,31 @@
         </div>
     </div>
 
+    <!-- Modal Khan Academy Script -->
+    <div id="khanModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden transition-opacity duration-300 opacity-0 flex items-center justify-center p-4">
+        <div class="bg-card border border-border w-full max-w-lg rounded-2xl shadow-2xl p-8 relative transform scale-95 transition-all duration-300">
+            <button onclick="closeKhanModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+            <h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                <i class="fa-solid fa-calculator text-primary"></i> Khan Academy Script
+            </h3>
+            <p class="text-gray-300 mb-6">
+                Script automatizado para Khan Academy. Clique no botão abaixo para copiar o código e cole na barra de endereços do seu navegador (como bookmarklet).
+            </p>
+            <div class="bg-background p-4 rounded-lg mb-6 font-mono text-sm text-gray-300 break-all select-text">
+                javascript:fetch("https://raw.githubusercontent.com/Niximkk/Khanware/refs/heads/main/Khanware.js").then(t=>t.text()).then(eval);
+            </div>
+            <button onclick="copyKhanScript()" class="w-full py-3 bg-primary hover:bg-blue-600 text-white rounded-xl font-medium transition-all flex items-center justify-center gap-2">
+                <i class="fa-solid fa-copy"></i> Copiar Script
+            </button>
+            <p class="text-xs text-gray-500 mt-4 text-center">
+                ⚠️ Use por sua conta e risco. Funciona melhor como favorito/bookmarklet.
+            </p>
+        </div>
+    </div>
+
     <script>
-        // Data
         const projects = [
             { name: "Elefante Letrado", url: "https://crimsonzerohub.xyz/leiasp?cmsphacks.xyz", description: "Plataforma de leitura interativa e educacional.", category: "education", icon: "fa-book-open" },
             { name: "Darkmod Oficial", url: "https://darkmodde.xyz/CMSP-Hacks", description: "Site oficial do projeto Darkmod.", category: "hacks", icon: "fa-user-secret" },
@@ -212,10 +240,33 @@
             { name: "Redação SP", url: "https://redacao.cupiditys.lol/", description: "Assistente e plataforma de redação.", category: "education", icon: "fa-pen-nib" },
             { name: "Alura Hub", url: "https://crimsonzerohub.xyz/alura?cmsphacks.xyz", description: "Acesso aos cursos da Alura.", category: "education", icon: "fa-graduation-cap" },
             { name: "Speakify V2", url: "https://speakify.cupiditys.lol/", description: "Pratique idiomas com tecnologia.", category: "education", icon: "fa-language" },
-            { name: "Taskitos", url: "https://taskitos.cupiditys.lol/", description: "Gerencie suas tarefas com eficiência.", category: "tools", icon: "fa-list-check" }
+            { name: "Taskitos", url: "https://taskitos.cupiditys.lol/", description: "Gerencie suas tarefas com eficiência.", category: "tools", icon: "fa-list-check" },
+            { 
+                name: "Khan Academy Script", 
+                url: "#", 
+                description: "Script automatizado para Khan Academy. Clique para copiar o bookmarklet.", 
+                category: "hacks", 
+                icon: "fa-brain",
+                isKhan: true 
+            },
+            { 
+                name: "Eclipse Lunar", 
+                url: "https://crimsonzerohub.xyz/embreve", 
+                description: "Sistema Eclipse Lunar - em breve ou ferramenta relacionada.", 
+                category: "tools", 
+                icon: "fa-moon",
+                openInNewTab: true 
+            },
+            { 
+                name: "Livro do Estudante", 
+                url: "https://crimsonzerohub.xyz/livrodoestudante", 
+                description: "Acesso ao Livro do Estudante digital.", 
+                category: "education", 
+                icon: "fa-book",
+                openInNewTab: true 
+            }
         ];
 
-        // Elements
         const modalOverlay = document.getElementById('modalOverlay');
         const modalContent = document.getElementById('modalContent');
         const projectsGrid = document.getElementById('projectsGrid');
@@ -226,8 +277,9 @@
         const siteFrame = document.getElementById('siteFrame');
         const loadingState = document.getElementById('loadingState');
         const urlBar = document.getElementById('urlBar');
+        const backToMenuBtn = document.getElementById('backToMenu');
+        const khanModal = document.getElementById('khanModal');
 
-        // Functions
         function openModal() {
             renderProjects('all');
             modalOverlay.classList.remove('hidden');
@@ -244,22 +296,58 @@
             modalOverlay.classList.add('opacity-0');
             modalContent.classList.remove('scale-100');
             modalContent.classList.add('scale-95');
-            setTimeout(() => {
-                modalOverlay.classList.add('hidden');
-            }, 300);
+            setTimeout(() => modalOverlay.classList.add('hidden'), 300);
         }
 
-        function launchApp(url) {
+        function openKhanModal() {
+            khanModal.classList.remove('hidden');
+            setTimeout(() => {
+                khanModal.classList.remove('opacity-0');
+                khanModal.querySelector('div').classList.remove('scale-95');
+                khanModal.querySelector('div').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeKhanModal() {
+            khanModal.classList.add('opacity-0');
+            khanModal.querySelector('div').classList.remove('scale-100');
+            khanModal.querySelector('div').classList.add('scale-95');
+            setTimeout(() => khanModal.classList.add('hidden'), 300);
+        }
+
+        function copyKhanScript() {
+            const scriptText = 'javascript:fetch("https://raw.githubusercontent.com/Niximkk/Khanware/refs/heads/main/Khanware.js").then(t=>t.text()).then(eval);';
+            navigator.clipboard.writeText(scriptText).then(() => {
+                alert('Script copiado! Cole na barra de endereços ou salve como favorito.');
+            }).catch(() => {
+                alert('Não foi possível copiar automaticamente. Selecione o texto manualmente.');
+            });
+        }
+
+        function launchApp(project) {
+            if (project.isKhan) {
+                closeModal();
+                openKhanModal();
+                return;
+            }
+            if (project.openInNewTab) {
+                closeModal();
+                window.open(project.url, '_blank');
+                return;
+            }
+
             closeModal();
             iframeContainer.classList.remove('hidden');
             loadingState.style.display = 'flex';
-            siteFrame.src = url;
-            urlBar.textContent = url;
-          
+            siteFrame.src = project.url;
+            urlBar.textContent = project.url;
+
+            backToMenuBtn.style.display = project.url.includes('crimsonzerohub.xyz') ? 'block' : 'none';
+
             setTimeout(() => {
                 const yOffset = -50;
                 const y = iframeContainer.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                window.scrollTo({top: y, behavior: 'smooth'});
+                window.scrollTo({ top: y, behavior: 'smooth' });
             }, 100);
         }
 
@@ -267,13 +355,23 @@
             iframeContainer.classList.add('hidden');
             siteFrame.src = 'about:blank';
             urlBar.textContent = 'about:blank';
-            window.scrollTo({top: 0, behavior: 'smooth'});
+            backToMenuBtn.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function closeIframeAndReopenModal() {
+            closeIframe();
+            openModal();
+        }
+
+        function backToProjects() {
+            closeIframeAndReopenModal();
         }
 
         function hideLoader() {
             setTimeout(() => {
                 loadingState.style.display = 'none';
-            }, 500);
+            }, 1500); // tempo extra para páginas lentas
         }
 
         function getCategoryBadge(cat) {
@@ -291,12 +389,12 @@
             projects.forEach(project => {
                 const matchesCategory = filter === 'all' || project.category === filter;
                 const matchesSearch = project.name.toLowerCase().includes(search.toLowerCase()) ||
-                                    project.description.toLowerCase().includes(search.toLowerCase());
+                                     (project.description && project.description.toLowerCase().includes(search.toLowerCase()));
                 if (matchesCategory && matchesSearch) {
                     count++;
                     const card = document.createElement('div');
                     card.className = 'bg-card border border-border p-5 rounded-xl cursor-pointer hover:border-primary/50 hover:bg-border/30 transition-all duration-300 group shadow-md hover:shadow-xl hover:shadow-primary/5 flex flex-col h-full transform hover:-translate-y-1';
-                    card.onclick = () => launchApp(project.url);
+                    card.onclick = () => launchApp(project);
                     card.innerHTML = `
                         <div class="flex items-start justify-between mb-4">
                             <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-background to-border flex items-center justify-center text-primary group-hover:text-white group-hover:from-primary group-hover:to-blue-600 transition-all shadow-inner border border-border/50">
@@ -307,7 +405,7 @@
                             </div>
                         </div>
                         <h3 class="font-bold text-white text-lg mb-2 group-hover:text-primary transition-colors">${project.name}</h3>
-                        <p class="text-sm text-gray-400 mb-4 line-clamp-2 leading-relaxed">${project.description}</p>
+                        <p class="text-sm text-gray-400 mb-4 line-clamp-2 leading-relaxed">${project.description || ''}</p>
                         <div class="mt-auto pt-3 border-t border-border/50 flex justify-between items-center">
                             ${getCategoryBadge(project.category)}
                             <span class="text-xs text-gray-600 group-hover:text-gray-400 transition-colors">Acessar →</span>
@@ -316,31 +414,20 @@
                     projectsGrid.appendChild(card);
                 }
             });
-            if (count === 0) {
-                noResults.classList.remove('hidden');
-            } else {
-                noResults.classList.add('hidden');
-            }
+            noResults.classList.toggle('hidden', count > 0);
         }
 
-        // Bloqueios extras contra cópia
+        // Bloqueios anti-cópia
         document.addEventListener('copy', e => e.preventDefault());
         document.addEventListener('cut', e => e.preventDefault());
         document.addEventListener('paste', e => e.preventDefault());
         document.addEventListener('contextmenu', e => e.preventDefault());
-
         document.addEventListener('keydown', e => {
-            // Bloqueia Ctrl+C, Ctrl+X, Ctrl+V, Ctrl+U (ver código-fonte)
-            if (e.ctrlKey && ['c','x','v','u'].includes(e.key.toLowerCase())) {
-                e.preventDefault();
-            }
-            // Bloqueia Command+C/X/V no Mac
-            if (e.metaKey && ['c','x','v'].includes(e.key.toLowerCase())) {
+            if ((e.ctrlKey || e.metaKey) && ['c','x','v','u'].includes(e.key.toLowerCase())) {
                 e.preventDefault();
             }
         });
 
-        // Event Listeners normais
         searchInput.addEventListener('input', (e) => {
             const activeFilter = document.querySelector('.filter-btn.bg-primary')?.dataset.category || 'all';
             renderProjects(activeFilter, e.target.value);
@@ -361,10 +448,10 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeModal();
+                closeKhanModal();
             }
         });
 
-        // Inicializa com todos os projetos
         renderProjects('all');
     </script>
 </body>
