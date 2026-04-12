@@ -278,22 +278,26 @@
 
         // Dados dos projetos
         var projects = [
-            { name: "taskitos", url: "https://taskitos.cupiditys.lol", description: "tarefas sp para sala do futuo.", category: "education", icon: "fa-book-open" },
-            { name: "CMSP Tools", url: "https://cmsptoolssite.netlify.app/", description: "Coleção completa de ferramentas para CMSP.", category: "cmsp", icon: "fa-toolbox", requiresAuth: true },
-            { name: "Batata Scripts (CMSP)", url: "https://obatataokkjj.github.io/Batata-Scripts/", description: "Repositório de scripts e utilitários para web.", category: "cmsp", icon: "fa-code", requiresAuth: true },
-            { name: "Darkmod Oficial", url: "https://darkmodde.xyz/CMSP-Hacks", description: "Bypasses e mods do projeto Darkmod.", category: "cmsp", icon: "fa-user-ninja", requiresAuth: true },
-            { name: "1lusa0 Hacks", url: "https://1lusa0.github.io/SalaDoFuturo-Plataformas-Hacks/", description: "Ferramentas focadas na Sala do Futuro.", category: "salafuturo", icon: "fa-rocket", requiresAuth: true },
-            { name: "Auto-Responder SDF", url: "#", description: "Script Bookmarklet para auto-resolução na Sala do Futuro.", category: "salafuturo", icon: "fa-bolt", isScript: true, scriptCode: "javascript:alert('Coloque o código real do script da Sala do Futuro aqui.');" },
-            { name: "Khan Academy Hack", url: "#", description: "Script automatizado (Khanware) para Khan Academy.", category: "hacks", icon: "fa-calculator", isScript: true, scriptCode: "javascript:fetch('https://raw.githubusercontent.com/Niximkk/Khanware/refs/heads/main/Khanware.js').then(t=>t.text()).then(eval);" },
-            { name: "Bypass Prova Paulista", url: "#", description: "Desbloqueador de abas e cópia para Prova Paulista.", category: "hacks", icon: "fa-file-shield", isScript: true, scriptCode: "javascript:alert('Script de Bypass de Prova inserido aqui.');" },
-            { name: "Brainly Unlocker", url: "#", description: "Remove o bloqueio de anúncios e limite de respostas do Brainly.", category: "hacks", icon: "fa-brain", isScript: true, scriptCode: "javascript:(function(){document.querySelectorAll('.brn-ads-box, .js-react-bottom-banner').forEach(e=>e.remove());document.body.style.overflow='auto';})();" },
-            { name: "Elefante Letrado", url: "https://crimsonzerohub.xyz/leiasp?cmsphacks.xyz", description: "Plataforma de leitura interativa e educacional.", category: "education", icon: "fa-book-open" },
-            { name: "Matific", url: "https://matific.cupiditys.lol/dashboard", description: "Plataforma de matemática gamificada.", category: "education", icon: "fa-square-root-variable" },
-            { name: "Redação SP", url: "https://redacao.cupiditys.lol/", description: "Assistente e plataforma de redação.", category: "education", icon: "fa-pen-nib" },
-            { name: "Alura Hub", url: "https://crimsonzerohub.xyz/alura?cmsphacks.xyz", description: "Acesso aos cursos da Alura desbloqueados.", category: "education", icon: "fa-graduation-cap" },
-            { name: "Speakify V2", url: "https://speakify.cupiditys.lol/", description: "Pratique idiomas com tecnologia.", category: "education", icon: "fa-language" },
-            { name: "Livro do Estudante", url: "https://crimsonzerohub.xyz/livrodoestudante", description: "Acesso ao Livro do Estudante digital (Acesso Restrito).", category: "education", icon: "fa-book", requiresAuth: true }
-        ];
+    { name: "taskitos", url: "https://taskitos.cupiditys.lol", description: "tarefas sp para sala do futuo.", category: "education", icon: "fa-book-open" },
+    { name: "CMSP Tools", url: "https://cmsptoolssite.netlify.app/", description: "Coleção completa de ferramentas para CMSP.", category: "cmsp", icon: "fa-toolbox", requiresAuth: true },
+    { 
+        name: "liberar copia e cola na sala do futuro.", 
+        url: "#", 
+        description: "script bookmarket para liberar copiar e cola.", 
+        category: "salafuturo", 
+        icon: "fa-bolt", 
+        isScript: true, 
+        scriptCode: "javascript:function remove_block(){const e=function(e){return e.stopImmediatePropagation(),!0};document.addEventListener('copy',e,!0),document.addEventListener('cut',e,!0),document.addEventListener('paste',e,!0),alert('Block Removed!')}remove_block();" 
+    },
+    { name: "Khan Academy Hack", url: "#", description: "Script automatizado (Khanware) para Khan Academy.", category: "hacks", icon: "fa-calculator", isScript: true, scriptCode: "javascript:fetch('https://raw.githubusercontent.com/Niximkk/Khanware/refs/heads/main/Khanware.js').then(t=>t.text()).then(eval);" },
+    { name: "Brainly Unlocker", url: "#", description: "Remove o bloqueio de anúncios e limite de respostas do Brainly.", category: "hacks", icon: "fa-brain", isScript: true, scriptCode: "javascript:(function(){document.querySelectorAll('.brn-ads-box, .js-react-bottom-banner').forEach(e=>e.remove());document.body.style.overflow='auto';})();" },
+    { name: "Elefante Letrado", url: "https://crimsonzerohub.xyz/leiasp?cmsphacks.xyz", description: "Plataforma de leitura interativa e educacional.", category: "education", icon: "fa-book-open" },
+    { name: "Matific", url: "https://matific.cupiditys.lol/dashboard", description: "Plataforma de matemática gamificada.", category: "education", icon: "fa-square-root-variable" },
+    { name: "Redação SP", url: "https://redacao.cupiditys.lol/", description: "Assistente e plataforma de redação.", category: "education", icon: "fa-pen-nib" },
+    { name: "Alura Hub", url: "https://crimsonzerohub.xyz/alura?cmsphacks.xyz", description: "Acesso aos cursos da Alura desbloqueados.", category: "education", icon: "fa-graduation-cap" },
+    { name: "Speakify V2", url: "https://speakify.cupiditys.lol/", description: "Pratique idiomas com tecnologia.", category: "education", icon: "fa-language" },
+    { name: "Livro do Estudante", url: "https://crimsonzerohub.xyz/livrodoestudante", description: "Acesso ao Livro do Estudante digital (Acesso Restrito).", category: "education", icon: "fa-book", requiresAuth: true }
+];
 
         // Funções de Modal
         function openModal() {
